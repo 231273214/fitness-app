@@ -1,46 +1,46 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router'; // Añadido Router y RouterLink
+import { AuthService } from '../../core/auth.service';
 import { 
   IonContent, 
-  IonHeader, 
-  IonTitle, 
-  IonToolbar, 
   IonItem, 
   IonInput, 
-  IonButton 
+  IonButton,
+  IonLabel,
+  IonRouterLink 
 } from '@ionic/angular/standalone';
-import { AuthService } from '../../core/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
   standalone: true,
   imports: [
     FormsModule,
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     IonItem,
     IonInput,
-    IonButton
+    IonButton,
+    IonLabel,
+    IonRouterLink, // Necesario para routerLink en ion-button
+    RouterLink // Necesario para funcionalidad de enrutamiento
   ]
 })
 export class LoginPage {
-  email: string = '';  // <-- Añade esta propiedad
-  password: string = ''; // <-- Añade esta propiedad
+  email: string = '';
+  password: string = '';
 
-  private authService = inject(AuthService);
-  private router = inject(Router);
+  constructor(
+    private authService: AuthService,
+    private router: Router // Inyectamos Router para navegación programática
+  ) {}
 
-  async login() {
-    try {
-      await this.authService.login(this.email, this.password);
-      this.router.navigate(['/home']);
-    } catch (error) {
-      alert('Error de autenticación. Verifica tus credenciales.');
-    }
+  login() {
+    this.authService.login(this.email, this.password);
+  }
+
+  // Método alternativo por si prefieres navegación programática
+  goToRegister() {
+    this.router.navigate(['/register']);
   }
 }

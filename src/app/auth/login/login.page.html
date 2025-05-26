@@ -1,17 +1,49 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
+<ion-content class="ion-padding">
   <form (ngSubmit)="login()">
     <ion-item>
-      <ion-input [(ngModel)]="email" type="email" placeholder="Email" name="email"></ion-input>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input 
+        [(ngModel)]="email" 
+        type="email" 
+        name="email" 
+        required
+      ></ion-input>
     </ion-item>
+
     <ion-item>
-      <ion-input [(ngModel)]="password" type="password" placeholder="Contraseña" name="password"></ion-input>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input 
+        [(ngModel)]="password" 
+        type="password" 
+        name="password" 
+        required
+      ></ion-input>
     </ion-item>
-    <ion-button type="submit">Entrar</ion-button>
+
+    <ion-button type="submit" expand="block" class="ion-margin-top">
+      Entrar
+    </ion-button>
+
+    <!-- Opción 1: Uso de routerLink (recomendado) -->
+    <ion-button 
+      routerLink="/register" 
+      expand="block" 
+      fill="clear" 
+      class="ion-margin-top"
+    >
+      ¿No tienes cuenta? Regístrate
+    </ion-button>
+
+    <!-- Opción 2: Navegación programática (alternativa) -->
+    <!--
+    <ion-button 
+      (click)="goToRegister()" 
+      expand="block" 
+      fill="clear" 
+      class="ion-margin-top"
+    >
+      ¿No tienes cuenta? Regístrate
+    </ion-button>
+    -->
   </form>
 </ion-content>

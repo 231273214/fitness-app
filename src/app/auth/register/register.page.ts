@@ -1,20 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { AuthService } from '../../core/auth.service';
+import { 
+  IonContent, 
+  IonItem, 
+  IonInput, 
+  IonButton,
+  IonNote,
+  IonLabel
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
-  styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [
+    FormsModule, 
+    IonContent, 
+    IonItem, 
+    IonInput, 
+    IonButton, 
+    IonNote,
+    IonLabel
+  ]
 })
-export class RegisterPage implements OnInit {
+export class RegisterPage {
+  email: string = '';
+  password: string = '';
 
-  constructor() { }
+  constructor(public authService: AuthService) {}
 
-  ngOnInit() {
+  register() {
+    if (this.authService.isValidEmail(this.email) && this.password.length >= 6) {
+      this.authService.register(this.email, this.password);
+    }
   }
-
 }

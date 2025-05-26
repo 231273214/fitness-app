@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { WorkoutService } from '../../core/workout.service';
 
-@Component({
-  selector: 'app-workout',
-  templateUrl: './workout.page.html',
-  styleUrls: ['./workout.page.scss'],
-  standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
-})
-export class WorkoutPage implements OnInit {
+export class WorkoutPage {
+  exercises = [
+    { name: 'Press banca', sets: 3, reps: 10, weight: 50 }
+  ];
 
-  constructor() { }
+  constructor(private workoutService: WorkoutService) {}
 
-  ngOnInit() {
+  async saveWorkout() {
+    const success = await this.workoutService.saveWorkout({
+      exercises: this.exercises
+    });
+    
+    if (success) {
+      alert('¡Entrenamiento guardado!');
+    } else {
+      alert('Error al guardar');
+    }
   }
-
 }

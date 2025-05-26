@@ -1,13 +1,53 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>register</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding">
+  <form (ngSubmit)="register()">
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input 
+        [(ngModel)]="email" 
+        type="email" 
+        name="email"
+        required
+        autocomplete="email"
+        inputmode="email"
+      ></ion-input>
+    </ion-item>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">register</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <ion-note color="danger" *ngIf="email && !authService.isValidEmail(email)">
+      Formato inválido. Ejemplo: usuario&#64;dominio.com
+    </ion-note>
+
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input 
+        [(ngModel)]="password" 
+        type="password" 
+        name="password"
+        required
+        minlength="6"
+        autocomplete="new-password"
+      ></ion-input>
+    </ion-item>
+
+    <ion-note color="danger" *ngIf="password && password.length < 6">
+      Mínimo 6 caracteres
+    </ion-note>
+
+    <ion-button 
+      type="submit" 
+      expand="block" 
+      [disabled]="!authService.isValidEmail(email) || password.length < 6"
+      class="ion-margin-top"
+    >
+      Registrar Usuario
+    </ion-button>
+
+    <ion-button 
+      routerLink="/login" 
+      expand="block" 
+      fill="clear" 
+      class="ion-margin-top"
+    >
+      ¿Ya tienes cuenta? Inicia sesión
+    </ion-button>
+  </form>
 </ion-content>
