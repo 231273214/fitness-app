@@ -17,18 +17,21 @@
     </ion-button>
   </div>
 
-  <!-- Barra de navegación inferior -->
-  <ion-tabs>
-    <ion-tab-bar slot="bottom">
-      <ion-tab-button tab="exercises">
-        <ion-icon name="barbell"></ion-icon>
-        <ion-label>Ejercicios</ion-label>
-      </ion-tab-button>
-      
-      <ion-tab-button tab="history">
-        <ion-icon name="time"></ion-icon>
-        <ion-label>Historial</ion-label>
-      </ion-tab-button>
-    </ion-tab-bar>
-  </ion-tabs>
+  <!-- Menú inferior alternativo -->
+  <ion-grid class="bottom-menu">
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" fill="clear" routerLink="/exercises">
+          <ion-icon name="barbell"></ion-icon>
+          <ion-label>Ejercicios</ion-label>
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="block" fill="clear" routerLink="/history">
+          <ion-icon name="time"></ion-icon>
+          <ion-label>Historial</ion-label>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -18,6 +18,14 @@ export const routes: Routes = [
     path: 'workout',
     loadComponent: () => import('./pages/workout/workout.page').then(m => m.WorkoutPage)
   },
+  { 
+    path: 'exercises',
+    loadComponent: () => import('./pages/exercise-library/exercise-library.page').then(m => m.ExerciseLibraryPage)
+  },
+  { 
+    path: 'history',
+    loadComponent: () => import('./pages/history/history.page').then(m => m.HistoryPage)
+  },
   {
     path: '',
     redirectTo: 'login',
