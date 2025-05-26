@@ -1,21 +1,17 @@
-import { WorkoutService } from '../../core/workout.service';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
 
-export class WorkoutPage {
-  exercises = [
-    { name: 'Press banca', sets: 3, reps: 10, weight: 50 }
-  ];
-
-  constructor(private workoutService: WorkoutService) {}
-
-  async saveWorkout() {
-    const success = await this.workoutService.saveWorkout({
-      exercises: this.exercises
-    });
-    
-    if (success) {
-      alert('¡Entrenamiento guardado!');
-    } else {
-      alert('Error al guardar');
-    }
-  }
-}
+@Component({
+  selector: 'app-workout',
+  templateUrl: './workout.page.html',
+  styleUrls: ['./workout.page.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule
+  ]
+})
+export class WorkoutPage {}

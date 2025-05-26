@@ -1,6 +1,34 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Listo para comenzar tu entrenamiento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content class="ion-padding">
-  <h1>¡Bienvenido a tu App Fitness!</h1>
-  <ion-button (click)="goToWorkout()" expand="block">
-    Ir a Entrenamiento
-  </ion-button>
+  <!-- Sección de Inicio Rápido -->
+  <div class="section">
+    <h2>Inicio rápido</h2>
+    <ion-button 
+      expand="block" 
+      color="secondary" 
+      (click)="goToWorkout()" 
+      class="ion-margin-top">
+      COMENZAR ENTRENAMIENTO VACÍO
+    </ion-button>
+  </div>
+
+  <!-- Barra de navegación inferior -->
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="exercises">
+        <ion-icon name="barbell"></ion-icon>
+        <ion-label>Ejercicios</ion-label>
+      </ion-tab-button>
+      
+      <ion-tab-button tab="history">
+        <ion-icon name="time"></ion-icon>
+        <ion-label>Historial</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
 </ion-content>
