@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router'; // Añadido Router y RouterLink
 import { AuthService } from '../../core/auth.service';
 import { 
   IonContent, 
@@ -7,7 +8,8 @@ import {
   IonInput, 
   IonButton,
   IonNote,
-  IonLabel
+  IonLabel,
+  IonRouterLink
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -21,18 +23,25 @@ import {
     IonInput, 
     IonButton, 
     IonNote,
-    IonLabel
+    IonRouterLink,
+    IonLabel,
+    RouterLink
   ]
 })
 export class RegisterPage {
   email: string = '';
   password: string = '';
 
-  constructor(public authService: AuthService) {}
+  constructor(
+    private router: Router, 
+    public authService: AuthService) {}
 
   register() {
     if (this.authService.isValidEmail(this.email) && this.password.length >= 6) {
       this.authService.register(this.email, this.password);
     }
+  }
+  goToLogin(){
+    this.router.navigate(['/login']);
   }
 }
