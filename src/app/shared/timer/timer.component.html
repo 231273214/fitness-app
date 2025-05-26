@@ -1,3 +1,9 @@
-<p>
-  timer works!
-</p>
+<div class="timer-container">
+  <h2>{{ formatTime(remainingTime) }}</h2>
+
+  <div class="controls">
+    <button (click)="start()" [disabled]="isRunning">Iniciar</button>
+    <button (click)="pause()" [disabled]="!isRunning">Pausar</button>
+    <button (click)="reset()">Reiniciar</button>
+  </div>
+</div>
