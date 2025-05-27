@@ -1,22 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, query, where } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
-
-export interface Workout {
-  id?: string; 
-  date: Date;
-  exercises: ExerciseInWorkout[];
-  userId: string;
-  notes?: string;
-}
-
-export interface ExerciseInWorkout {
-  exerciseId: number;
-  sets: number;
-  reps: number;
-  weight?: number;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -24,38 +8,23 @@ export interface ExerciseInWorkout {
 export class WorkoutService {
   constructor(
     private firestore: Firestore,
-    private auth: Auth
+    private auth: Auth // Inyecta Auth para obtener el userId
   ) {}
 
-  async saveWorkout(workoutData: Omit<Workout, 'id' | 'userId' | 'date'>): Promise<boolean> {
-    const userId = this.auth.currentUser?.uid;
-    if (!userId) {
-      console.error('No user logged in');
-      return false;
-    }
-
-    const workout: Workout = {
-      ...workoutData,
+  async saveWorkout(workoutData: { exercises: any[] }) {
+    const workout = {
       date: new Date(),
-      userId
+      exercises: workoutData.exercises,
+      userId: this.auth.currentUser?.uid // Asocia el entrenamiento al usuario
     };
 
     try {
       const workoutsRef = collection(this.firestore, 'workouts');
       await addDoc(workoutsRef, workout);
-      return true;
+      return true; // Éxito
     } catch (error) {
-      console.error('Error saving workout:', error);
-      throw error; 
+      console.error('Error guardando entrenamiento:', error);
+      return false; // Fallo
     }
-  }
-
-  getUserWorkouts(): Observable<Workout[]> {
-    const userId = this.auth.currentUser?.uid;
-    if (!userId) throw new Error('User not authenticated');
-
-    const workoutsRef = collection(this.firestore, 'workouts');
-    const q = query(workoutsRef, where('userId', '==', userId));
-    return collectionData(q, { idField: 'id' }) as Observable<Workout[]>;
   }
 }

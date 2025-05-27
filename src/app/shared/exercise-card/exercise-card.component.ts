@@ -1,11 +1,15 @@
-// exercise-card.component.ts
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-exercise-card',
   templateUrl: './exercise-card.component.html',
-  styleUrls: ['./exercise-card.component.scss']
+  styleUrls: ['./exercise-card.component.scss'],
+  standalone: true,
 })
-export class ExerciseCardComponent {
-  @Input() exercise: any; 
+export class ExerciseCardComponent  implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {}
+
 }

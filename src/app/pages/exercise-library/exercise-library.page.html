@@ -1,49 +1,13 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Biblioteca de Ejercicios</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="logout()">
-        <ion-icon name="log-out-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-searchbar 
-      [(ngModel)]="searchTerm" 
-      (ionChange)="filterExercises()"
-      placeholder="Buscar ejercicios..."
-      animated
-      debounce="300">
-    </ion-searchbar>
-    
-    <ion-segment [(ngModel)]="selectedMuscleGroup" (ionChange)="filterExercises()">
-      <ion-segment-button *ngFor="let group of muscleGroups" [value]="group">
-        {{ group | titlecase }}
-      </ion-segment-button>
-    </ion-segment>
+    <ion-title>exercise-library</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-loading [isOpen]="isLoading" message="Cargando ejercicios..."></ion-loading>
-
-  <ion-list>
-    <ion-item-sliding *ngFor="let exercise of filteredExercises">
-      <ion-item [class.selected]="isSelected(exercise)" (click)="toggleExerciseSelection(exercise)">
-        <ion-label>
-          <h2>{{ exercise.name }}</h2>
-          <p>{{ exercise.muscleGroup }}</p>
-          <p *ngIf="exercise.equipment">{{ exercise.equipment }}</p>
-        </ion-label>
-        <ion-badge slot="end" *ngIf="isSelected(exercise)">Seleccionado</ion-badge>
-      </ion-item>
-    </ion-item-sliding>
-  </ion-list>
-
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="createWorkout()" [disabled]="selectedExercises.length === 0">
-      <ion-icon name="add-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">exercise-library</ion-title>
+    </ion-toolbar>
+  </ion-header>
 </ion-content>

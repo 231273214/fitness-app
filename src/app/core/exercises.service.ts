@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, doc, docData } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 export interface Exercise {
   id: number;
@@ -9,43 +6,28 @@ export interface Exercise {
   muscleGroup: string;
   description?: string;
   videoUrl?: string;
-  equipment?: string;
-  difficulty?: 'Beginner' | 'Intermediate' | 'Advanced';
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExercisesService {
-  private exercisesCollection = collection(this.firestore, 'exercises');
-  
-  // Datos estáticos (corregido el nombre para mantener consistencia)
-  private staticExercises: Exercise[] = [
-    { id: 1, name: 'Lat Pulldown (Cable)', muscleGroup: 'Back', equipment: 'Cable Machine', difficulty: 'Beginner' },
-    { id: 2, name: 'Bench Press', muscleGroup: 'Chest', equipment: 'Barbell', difficulty: 'Intermediate' },
-    // ...otros ejercicios
+
+  private exercises: Exercise[] = [
+    { id: 1, name: 'Lat Pulldown (Cable)', muscleGroup: 'Back' },
+    { id: 2, name: 'Bench Press', muscleGroup: 'Chest' },
+    { id: 3, name: 'Squat', muscleGroup: 'Legs' },
+    { id: 4, name: 'Biceps Curl', muscleGroup: 'Arms' },
+    { id: 5, name: 'Triceps Extension', muscleGroup: 'Arms' },
   ];
 
-  constructor(private firestore: Firestore) {}
+  constructor() {}
 
-  // Obtener todos los ejercicios desde Firestore
-  getAll(): Observable<Exercise[]> {
-    return collectionData(this.exercisesCollection, { idField: 'id' }) as Observable<Exercise[]>;
+  getAll(): Exercise[] {
+    return [...this.exercises];
   }
 
-  // Obtener un ejercicio por ID desde Firestore
-  getById(id: string): Observable<Exercise | undefined> {
-    const exerciseDoc = doc(this.firestore, `exercises/${id}`);
-    return docData(exerciseDoc, { idField: 'id' }) as Observable<Exercise>;
-  }
-
-  // Métodos estáticos (opcional)
-  getStaticAll(): Exercise[] {
-    return [...this.staticExercises];
-  }
-
-  // Corregido el typo de staticExercises (antes estaba staticExercises)
-  getStaticById(id: number): Exercise | undefined {
-    return this.staticExercises.find(ex => ex.id === id);
+  getById(id: number): Exercise | undefined {
+    return this.exercises.find(ex => ex.id === id);
   }
 }

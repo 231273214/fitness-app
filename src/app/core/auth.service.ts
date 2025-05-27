@@ -1,84 +1,67 @@
-import { Injectable, NgZone } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, authState } from '@angular/fire/auth';
+import { Injectable } from '@angular/core';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private authState = new BehaviorSubject<boolean>(false);
-  authState$ = this.authState.asObservable();
+  constructor(private auth: Auth, private router: Router) {}
 
-  constructor(
-    private auth: Auth,
-    private router: Router,
-    private ngZone: NgZone
-  ) {
-    authState(this.auth).subscribe(user => {
-      this.authState.next(!!user);
-    });
-  }
-
-  async register(email: string, password: string): Promise<void> {
+  async register(email: string, password: string) {
     try {
-      this.validateCredentials(email, password);
-      
-      await createUserWithEmailAndPassword(this.auth, email, password);
-      this.redirectTo('/login');
+      // Validación básica de formato
+      if (!this.isValidEmail(email)) {
+        throw new Error('Formato de email inválido. Ejemplo: usuario@dominio.com');
+      }
+
+      if (password.length < 6) {
+        throw new Error('La contraseña debe tener al menos 6 caracteres');
+      }
+
+      const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+      console.log('Usuario registrado:', userCredential.user.email);
+      this.router.navigate(['/login']);
+      return true;
     } catch (error: any) {
-      this.handleAuthError(error);
-      throw error;
+      let errorMessage = 'Error en registro: ';
+      
+      switch(error.code) {
+        case 'auth/invalid-email':
+          errorMessage = 'Email inválido. Debe tener formato usuario@dominio.com';
+          break;
+        case 'auth/email-already-in-use':
+          errorMessage = 'Este email ya está registrado';
+          break;
+        case 'auth/weak-password':
+          errorMessage = 'La contraseña debe tener al menos 6 caracteres';
+          break;
+        default:
+          errorMessage += error.message;
+      }
+
+      alert(errorMessage);
+      return false;
     }
   }
 
-  async login(email: string, password: string): Promise<void> {
+  async login(email: string, password: string) {
     try {
       await signInWithEmailAndPassword(this.auth, email, password);
-      this.redirectTo('/home');
+      this.router.navigate(['/home']);
+      return true;
     } catch (error: any) {
-      this.handleAuthError(error);
-      throw error;
+      let errorMessage = 'Error en login: ';
+      
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        errorMessage = 'Email o contraseña incorrectos';
+      } else {
+        errorMessage += error.message;
+      }
+
+      alert(errorMessage);
+      return false;
     }
-  }
-
-  async logout(): Promise<void> {
-    try {
-      await signOut(this.auth);
-      this.redirectTo('/login');
-    } catch (error) {
-      console.error('Logout error:', error);
-      throw error;
-    }
-  }
-
-  private validateCredentials(email: string, password: string): void {
-    if (!this.isValidEmail(email)) {
-      throw new Error('Formato de email inválido');
-    }
-
-    if (password.length < 6) {
-      throw new Error('La contraseña debe tener al menos 6 caracteres');
-    }
-  }
-
-  private handleAuthError(error: any): void {
-    const errorMap: Record<string, string> = {
-      'auth/invalid-email': 'Email inválido',
-      'auth/email-already-in-use': 'Email ya registrado',
-      'auth/weak-password': 'Contraseña débil (mínimo 6 caracteres)',
-      'auth/user-not-found': 'Email no registrado',
-      'auth/wrong-password': 'Contraseña incorrecta',
-      'auth/too-many-requests': 'Demasiados intentos. Intenta más tarde'
-    };
-
-    throw new Error(errorMap[error.code] || error.message);
-  }
-
-  private redirectTo(path: string): void {
-    this.ngZone.run(() => {
-      this.router.navigate([path]);
-    });
   }
 
   public isValidEmail(email: string): boolean {
