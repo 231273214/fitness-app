@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { TimerComponent } from 'src/app/shared/timer/timer.component';
-import { ExercisesService, Exercise } from 'src/app/core/exercises.service'; // Asegúrate que la ruta sea correcta
+import { ExercisesService, Exercise } from 'src/app/core/exercises.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-workout',
@@ -17,7 +19,7 @@ import { ExercisesService, Exercise } from 'src/app/core/exercises.service'; // 
     TimerComponent
   ]
 })
-export class WorkoutPage {
+export class WorkoutPage implements OnInit {
   timerDuration: number = 60;
   startTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   currentExercises: any[] = [];
@@ -29,7 +31,9 @@ export class WorkoutPage {
   ) {}
 
   ngOnInit() {
-    this.availableExercises = this.exercisesService.getAll();
+    this.exercisesService.getAll().subscribe(exercises => {
+      this.availableExercises = exercises;
+    });
   }
 
   onTimerFinished() {
@@ -53,16 +57,17 @@ export class WorkoutPage {
         {
           text: 'Agregar',
           handler: (selectedId) => {
-            const exercise = this.exercisesService.getById(selectedId);
-            if (exercise) {
-              this.currentExercises.push({
-                id: exercise.id,
-                name: exercise.name,
-                sets: [
-                  { weight: null, reps: null }
-                ]
-              });
-            }
+            this.exercisesService.getById(selectedId).subscribe(exercise => {
+              if (exercise) {
+                this.currentExercises.push({
+                  id: exercise.id,
+                  name: exercise.name,
+                  sets: [
+                    { weight: null, reps: null }
+                  ]
+                });
+              }
+            });
           }
         }
       ]
