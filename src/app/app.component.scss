@@ -1,0 +1,15 @@
+ion-app {
+  /* Asegura que el contenido no sobrepase el área segura */
+  --ion-safe-area-top: env(safe-area-inset-top);
+  --ion-safe-area-right: env(safe-area-inset-right);
+  --ion-safe-area-bottom: env(safe-area-inset-bottom);
+  --ion-safe-area-left: env(safe-area-inset-left);
+}
+
+ion-content {
+  /* Ajuste del padding para dispositivos con notch */
+  --padding-top: var(--ion-safe-area-top, 0);
+  --padding-bottom: var(--ion-safe-area-bottom, 0);
+  --padding-start: var(--ion-safe-area-left, 0);
+  --padding-end: var(--ion-safe-area-right, 0);
+}
