@@ -23,6 +23,8 @@ export class WorkoutPage {
   workoutName: string = 'Entrenamiento Personalizado';
   currentExercises: any[] = [];
   availableExercises: Exercise[] = [];
+  selectedExerciseId: number | null = null;
+
 
   constructor(
     private alertController: AlertController,
@@ -37,6 +39,33 @@ export class WorkoutPage {
   goToHome() {
     this.router.navigate(['/home']); // Ajusta la ruta según tu configuración
   }
+
+  onExerciseSelected() {
+    if (!this.selectedExerciseId) return;
+
+    const exercise = this.exercisesService.getById(this.selectedExerciseId);
+    if (exercise) {
+      // Verifica si el ejercicio ya fue agregado
+      const isAlreadyAdded = this.currentExercises.some(ex => ex.id === exercise.id);
+      
+      if (!isAlreadyAdded) {
+        this.currentExercises.push({
+          id: exercise.id,
+          name: exercise.name,
+          sets: [{
+            weight: null,
+            reps: null,
+            completed: false,
+            restTimer: null
+          }]
+        });
+      }
+
+      // Resetea la selección
+      this.selectedExerciseId = null;
+    }
+  }
+
 
   async addExercise() {
     const alert = await this.alertController.create({

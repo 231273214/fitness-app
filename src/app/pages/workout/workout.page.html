@@ -65,9 +65,19 @@
     </div>
   </div>
   
-  <ion-button expand="block" color="success" (click)="addExercise()" class="add-exercise-btn">
-    Añadir Ejercicio
-  </ion-button>
+  <ion-item>
+    <ion-select 
+      [(ngModel)]="selectedExerciseId" 
+      placeholder="Selecciona un ejercicio" 
+      interface="action-sheet" 
+      (ionChange)="onExerciseSelected()"
+    >
+      <ion-select-option *ngFor="let exercise of availableExercises" [value]="exercise.id">
+        {{ exercise.name }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  
   <div class="fixed-buttons">
     <ion-button expand="block" color="primary" (click)="goToHome()">
       Guardar Entrenamiento

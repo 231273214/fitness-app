@@ -12,7 +12,8 @@ import {
   IonLabel,
   IonListHeader, 
   IonButtons,
-  IonButton
+  IonButton,
+  IonIcon
 } from '@ionic/angular/standalone';
 import { ExercisesService } from '../../core/exercises.service';
 import { RouterModule } from '@angular/router';
@@ -35,7 +36,8 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     RouterModule,
     IonButtons,
-    IonButton
+    IonButton,
+    IonIcon
   ]
 })
 export class ExerciseLibraryPage implements OnInit {
