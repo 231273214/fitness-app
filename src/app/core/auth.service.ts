@@ -52,7 +52,7 @@ export class AuthService {
     }
   }
 
-  private validateCredentials(email: string, password: string): void {
+  public validateCredentials(email: string, password: string): void {
     if (!this.isValidEmail(email)) {
       throw new Error('Formato de email inválido');
     }
@@ -81,7 +81,7 @@ export class AuthService {
     });
   }
 
-  private isValidEmail(email: string): boolean {
+  public isValidEmail(email: string): boolean {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 }
