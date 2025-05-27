@@ -1,15 +1,16 @@
 <ion-header>
   <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="goToHome()" title="Inicio">
+        <ion-icon slot="icon-only" name="home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>{{ workoutName }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-
-  
   <div class="main-content">
-
-
     <div *ngFor="let exercise of currentExercises; let i = index">
       <ion-card>
         <ion-card-header>
@@ -21,7 +22,8 @@
               <ion-col size="1">#</ion-col>
               <ion-col size="4">Peso (kg)</ion-col>
               <ion-col size="4">Reps</ion-col>
-              <ion-col size="3">✔</ion-col>
+              <ion-col size="2">✔</ion-col>
+              <ion-col size="1">✖</ion-col>
             </ion-row>
 
             <ion-row *ngFor="let set of exercise.sets; let j = index" [class.completed]="set.completed" class="set-row">
@@ -32,14 +34,18 @@
               <ion-col size="4">
                 <ion-input type="number" [(ngModel)]="set.reps"></ion-input>
               </ion-col>
-              <ion-col size="3">
+              <ion-col size="2">
                 <ion-button fill="clear" (click)="toggleSetCompletion(i, j)" class="check-button">
                   <ion-icon [name]="set.completed ? 'checkmark-circle' : 'checkmark-circle-outline'" 
                             [color]="set.completed ? 'success' : 'medium'">
                   </ion-icon>
                 </ion-button>
               </ion-col>
-              
+              <ion-col size="1">
+                <ion-button fill="clear" (click)="deleteSet(i, j)" class="delete-button">
+                  <ion-icon name="trash-outline" color="danger"></ion-icon>
+                </ion-button>
+              </ion-col>
 
               <ion-col size="12" class="ion-text-center rest-timer-col" *ngIf="set.restTimer !== null">
                 <app-timer
@@ -58,7 +64,6 @@
       </ion-card>
     </div>
   </div>
-
   
   <ion-button expand="block" color="success" (click)="addExercise()" class="add-exercise-btn">
     Añadir Ejercicio
