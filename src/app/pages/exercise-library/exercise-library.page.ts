@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { 
   IonContent, 
   IonHeader, 
@@ -9,7 +10,9 @@ import {
   IonList, 
   IonItem, 
   IonLabel,
-  IonListHeader 
+  IonListHeader, 
+  IonButtons,
+  IonButton
 } from '@ionic/angular/standalone';
 import { ExercisesService } from '../../core/exercises.service';
 import { RouterModule } from '@angular/router';
@@ -30,15 +33,20 @@ import { RouterModule } from '@angular/router';
     IonListHeader,
     CommonModule, 
     FormsModule,
-    RouterModule
+    RouterModule,
+    IonButtons,
+    IonButton
   ]
 })
 export class ExerciseLibraryPage implements OnInit {
   groupedExercises: {letter: string, exercises: any[]}[] = [];
 
-  constructor(private exercisesService: ExercisesService) { }
+  constructor(private exercisesService: ExercisesService, private router: Router) { }
 
   ngOnInit() {
     this.groupedExercises = this.exercisesService.getExercisesGroupedByLetter();
+  }
+  goToHome() {
+    this.router.navigate(['/home']); // Ajusta la ruta según tu configuración
   }
 }
