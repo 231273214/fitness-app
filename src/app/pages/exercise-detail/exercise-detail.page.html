@@ -1,0 +1,74 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{exercise?.name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="exercise">
+  <!-- Exercise Image Placeholder -->
+  <div class="exercise-image">
+    <ion-img [src]="'assets/images/exercises/' + exercise.id + '.jpg'" 
+            alt="{{exercise.name}}"></ion-img>
+  </div>
+
+  <!-- Instructions Section -->
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Instructions</ion-label>
+    </ion-list-header>
+    
+    <ion-item *ngFor="let instruction of exercise.instructions; let i = index">
+      <ion-label class="instruction-text">
+        <span class="step-number">{{i + 1}}.</span> {{instruction}}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Details Section -->
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Exercise Details</ion-label>
+    </ion-list-header>
+    
+    <ion-item>
+      <ion-label>
+        <h3>Muscle Group</h3>
+        <p>{{exercise.muscleGroup}}</p>
+      </ion-label>
+    </ion-item>
+    
+    <ion-item *ngIf="exercise.category">
+      <ion-label>
+        <h3>Category</h3>
+        <p>{{exercise.category}}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="exercise.equipment">
+      <ion-label>
+        <h3>Equipment</h3>
+        <p>{{exercise.equipment}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Preferences Section -->
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Preferences</ion-label>
+    </ion-list-header>
+    
+    <ion-item>
+      <ion-label>Rest Timer</ion-label>
+      <ion-note slot="end">90 sec</ion-note>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>Weight Unit</ion-label>
+      <ion-note slot="end">lbs</ion-note>
+    </ion-item>
+  </ion-list>
+</ion-content>
