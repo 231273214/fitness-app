@@ -1,0 +1,87 @@
+/* Estilo para filas completadas */
+.completed {
+  background-color: #155f1a;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  margin: 2px 0;
+}
+
+/* Estilo para el encabezado de la tabla */
+.table-header {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #ffffff;
+  border-bottom: 1px solid #ffffff;
+  padding-bottom: 8px;
+}
+
+/* Alineación de columnas */
+ion-col {
+  display: flex;
+  align-items: center;
+}
+
+/* Estilo para el botón de añadir serie */
+.add-set-button {
+  margin-top: 15px;
+}
+
+/* Estilo para el temporizador de descanso */
+.rest-timer-col {
+  margin-top: 10px;
+  padding: 0;
+  background-color:  #242178;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  app-timer {
+    width: 100%;
+    text-align: center;
+    
+    .timer-container {
+      margin: 0 auto;
+      padding: 5px 10px;
+      background-color: #f5f5f5;
+      border-radius: 8px;
+      display: inline-block;
+      
+      h2 {
+        margin: 0;
+        font-size: 1.2rem;
+        color: #2c3e50;
+      }
+    }
+  }
+}
+
+/* Estilo mejorado para el botón de check */
+.check-button {
+  --padding-start: 0;
+  --padding-end: 0;
+  
+  ion-icon {
+    font-size: 1.4rem;
+    transition: transform 0.2s ease;
+    background: rgb(70, 156, 236);
+    border-radius: 50%;
+    padding: 3px;
+    
+    &[color="success"] {
+      background: rgb(255, 0, 0);
+    }
+  }
+  
+  &:hover ion-icon {
+    transform: scale(1.1);
+  }
+}
+
+/* Mejora para las filas de series */
+.set-row {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  margin: 2px 0;
+  padding: 4px 0;
+}

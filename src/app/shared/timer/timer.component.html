@@ -1,7 +1,7 @@
 <div class="timer-container">
   <h2>{{ formatTime(remainingTime) }}</h2>
-
-  <div class="controls">
+  
+  <div class="controls" *ngIf="!autoStart">
     <button (click)="start()" [disabled]="isRunning">Iniciar</button>
     <button (click)="pause()" [disabled]="!isRunning">Pausar</button>
     <button (click)="reset()">Reiniciar</button>

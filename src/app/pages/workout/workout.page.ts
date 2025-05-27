@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { TimerComponent } from 'src/app/shared/timer/timer.component';
-import { ExercisesService, Exercise } from 'src/app/core/exercises.service'; // Asegúrate que la ruta sea correcta
+import { ExercisesService, Exercise } from 'src/app/core/exercises.service';
 
 @Component({
   selector: 'app-workout',
@@ -18,8 +18,8 @@ import { ExercisesService, Exercise } from 'src/app/core/exercises.service'; // 
   ]
 })
 export class WorkoutPage {
-  timerDuration: number = 60;
   startTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  workoutName: string = 'Entrenamiento Personalizado';
   currentExercises: any[] = [];
   availableExercises: Exercise[] = [];
 
@@ -30,10 +30,6 @@ export class WorkoutPage {
 
   ngOnInit() {
     this.availableExercises = this.exercisesService.getAll();
-  }
-
-  onTimerFinished() {
-    alert('¡Tiempo finalizado!');
   }
 
   async addExercise() {
@@ -59,7 +55,12 @@ export class WorkoutPage {
                 id: exercise.id,
                 name: exercise.name,
                 sets: [
-                  { weight: null, reps: null }
+                  {
+                    weight: null,
+                    reps: null,
+                    completed: false,
+                    restTimer: null
+                  }
                 ]
               });
             }
@@ -72,7 +73,23 @@ export class WorkoutPage {
   }
 
   addSet(exerciseIndex: number) {
-    this.currentExercises[exerciseIndex].sets.push({ weight: null, reps: null });
+    this.currentExercises[exerciseIndex].sets.push({
+      weight: null,
+      reps: null,
+      completed: false,
+      restTimer: null
+    });
+  }
+
+  toggleSetCompletion(exIndex: number, setIndex: number) {
+    const set = this.currentExercises[exIndex].sets[setIndex];
+    set.completed = !set.completed;
+
+    if (set.completed) {
+      set.restTimer = 180; // 3 minutos
+    } else {
+      set.restTimer = null;
+    }
   }
 
   finishWorkout() {

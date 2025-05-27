@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-timer',
@@ -6,16 +6,23 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.scss']
 })
-export class TimerComponent {
-  @Input() duration: number = 60; // duración en segundos (por defecto 1 min)
+export class TimerComponent implements OnChanges {
+  @Input() duration: number = 60; // duración en segundos
+  @Input() autoStart: boolean = false; // Nueva propiedad
   @Output() done = new EventEmitter<void>();
 
   remainingTime: number = this.duration;
   timerId: any;
   isRunning = false;
 
-  ngOnInit() {
-    this.remainingTime = this.duration;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['duration']) {
+      this.remainingTime = this.duration;
+    }
+    
+    if (changes['autoStart'] && this.autoStart && !this.isRunning) {
+      this.start();
+    }
   }
 
   start() {
@@ -27,7 +34,7 @@ export class TimerComponent {
 
       if (this.remainingTime <= 0) {
         this.stop();
-        this.done.emit(); // Emitir evento cuando termina
+        this.done.emit();
       }
     }, 1000);
   }

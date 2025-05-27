@@ -1,35 +1,75 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>ENTRENAMIENTO</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="finishWorkout()">TERMINAR</ion-button>
-    </ion-buttons>
+  <ion-toolbar color="primary">
+    <ion-title>{{ workoutName }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div class="start-time">
-    Hora de inicio: {{ startTime }}
+
+  
+  <div class="main-content">
+
+
+    <div *ngFor="let exercise of currentExercises; let i = index">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ exercise.name }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row class="table-header">
+              <ion-col size="1">#</ion-col>
+              <ion-col size="4">Peso (kg)</ion-col>
+              <ion-col size="4">Reps</ion-col>
+              <ion-col size="3">✔</ion-col>
+            </ion-row>
+
+            <ion-row *ngFor="let set of exercise.sets; let j = index" [class.completed]="set.completed" class="set-row">
+              <ion-col size="1">{{ j + 1 }}</ion-col>
+              <ion-col size="4">
+                <ion-input type="number" [(ngModel)]="set.weight"></ion-input>
+              </ion-col>
+              <ion-col size="4">
+                <ion-input type="number" [(ngModel)]="set.reps"></ion-input>
+              </ion-col>
+              <ion-col size="3">
+                <ion-button fill="clear" (click)="toggleSetCompletion(i, j)" class="check-button">
+                  <ion-icon [name]="set.completed ? 'checkmark-circle' : 'checkmark-circle-outline'" 
+                            [color]="set.completed ? 'success' : 'medium'">
+                  </ion-icon>
+                </ion-button>
+              </ion-col>
+              
+
+              <ion-col size="12" class="ion-text-center rest-timer-col" *ngIf="set.restTimer !== null">
+                <app-timer
+                  [duration]="set.restTimer"
+                  [autoStart]="set.completed"
+                  (finished)="set.restTimer = null">
+                </app-timer>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+          <ion-button expand="block" color="primary" (click)="addSet(i)" class="add-set-button">
+            Añadir Serie
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </div>
   </div>
 
-  <ng-container *ngFor="let exercise of currentExercises; let i = index">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>{{ exercise.name }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div *ngFor="let set of exercise.sets; let j = index">
-          <ion-item>
-            <ion-label>Set {{ j + 1 }}</ion-label>
-            <ion-input type="number" placeholder="LB" [(ngModel)]="set.weight"></ion-input>
-            <ion-input type="number" placeholder="Reps" [(ngModel)]="set.reps"></ion-input>
-          </ion-item>
-        </div>
-        <ion-button expand="block" (click)="addSet(i)">Añadir serie</ion-button>
-      </ion-card-content>
-    </ion-card>
-  </ng-container>
+  
+  <ion-button expand="block" color="success" (click)="addExercise()" class="add-exercise-btn">
+    Añadir Ejercicio
+  </ion-button>
+  <div class="fixed-buttons">
+    <ion-button expand="block" color="primary" (click)="finishWorkout()">
+      Finalizar Entrenamiento
+    </ion-button>
 
-  <ion-button expand="block" color="primary" (click)="addExercise()">AÑADIR EJERCICIO</ion-button>
-  <ion-button expand="block" color="danger" (click)="cancelWorkout()">CANCELAR ENTRENAMIENTO</ion-button>
+    <ion-button expand="block" color="danger" (click)="cancelWorkout()">
+      Cancelar Entrenamiento
+    </ion-button>
+  </div>
 </ion-content>
