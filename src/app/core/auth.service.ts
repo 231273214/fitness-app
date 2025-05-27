@@ -25,7 +25,7 @@ export class AuthService {
       this.validateCredentials(email, password);
       
       await createUserWithEmailAndPassword(this.auth, email, password);
-      this.redirectTo('/exercise-library');
+      this.redirectTo('/login');
     } catch (error: any) {
       this.handleAuthError(error);
       throw error;
@@ -35,7 +35,7 @@ export class AuthService {
   async login(email: string, password: string): Promise<void> {
     try {
       await signInWithEmailAndPassword(this.auth, email, password);
-      this.redirectTo('/exercise-library');
+      this.redirectTo('/home');
     } catch (error: any) {
       this.handleAuthError(error);
       throw error;
@@ -52,7 +52,7 @@ export class AuthService {
     }
   }
 
-  public validateCredentials(email: string, password: string): void {
+  private validateCredentials(email: string, password: string): void {
     if (!this.isValidEmail(email)) {
       throw new Error('Formato de email inválido');
     }
