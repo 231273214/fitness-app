@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 export interface Exercise {
   id: number;
@@ -6,28 +8,34 @@ export interface Exercise {
   muscleGroup: string;
   description?: string;
   videoUrl?: string;
+  equipment?: string;
+  difficulty?: 'Beginner' | 'Intermediate' | 'Advanced';
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExercisesService {
+  private exercisesCollection = collection(this.firestore, 'exercises');
 
-  private exercises: Exercise[] = [
-    { id: 1, name: 'Lat Pulldown (Cable)', muscleGroup: 'Back' },
-    { id: 2, name: 'Bench Press', muscleGroup: 'Chest' },
-    { id: 3, name: 'Squat', muscleGroup: 'Legs' },
-    { id: 4, name: 'Biceps Curl', muscleGroup: 'Arms' },
-    { id: 5, name: 'Triceps Extension', muscleGroup: 'Arms' },
-  ];
+  constructor(private firestore: Firestore) {}
 
-  constructor() {}
-
-  getAll(): Exercise[] {
-    return [...this.exercises];
+  getAll(): Observable<Exercise[]> {
+    return collectionData(this.exercisesCollection) as Observable<Exercise[]>;
   }
 
-  getById(id: number): Exercise | undefined {
-    return this.exercises.find(ex => ex.id === id);
+  // Si prefieres mantener datos estáticos (opcional)
+  private staticExercises: Exercise[] = [
+    { id: 1, name: 'Lat Pulldown (Cable)', muscleGroup: 'Back', equipment: 'Cable Machine', difficulty: 'Beginner' },
+    { id: 2, name: 'Bench Press', muscleGroup: 'Chest', equipment: 'Barbell', difficulty: 'Intermediate' },
+    // ...otros ejercicios
+  ];
+
+  getStaticAll(): Exercise[] {
+    return [...this.staticExercises];
+  }
+
+  getStaticById(id: number): Exercise | undefined {
+    return this.staticExercises.find(ex => ex.id === id);
   }
 }
