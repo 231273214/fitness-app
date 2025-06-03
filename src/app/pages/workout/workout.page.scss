@@ -37,7 +37,16 @@ ion-buttons {
   border-bottom: 1px solid #ffffff;
   padding-bottom: 8px;
 }
-
+ion-input {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.95rem;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
 /* Alineación de columnas */
 ion-col {
   display: flex;
